@@ -7,6 +7,7 @@
 #' by \code{XML::xmlParse()}.
 #'
 #' @return A dataframe.
+#' @importFrom dplyr select rename any_of
 #' @export
 #'
 #' @examples
@@ -30,12 +31,13 @@ ox_item_def <- function (parsed_xml) {
   }
 
   .attrs_node_and_ancestors(parsed_xml, "ItemDef") %>%
-    dplyr::select(item_oid = OID.2,
-                  item_name = Name.1,
-                  item_data_type = DataType,
-                  item_length = Length,
-                  item_significant_digits = SignificantDigits,
-                  item_sas_field_name = SASFieldName,
-                  item_comment = Comment)
+    select(any_of(c("OID.2", "Name.1", "DataType", "Length", "SignificantDigits", "SASFieldName", "Comment"))) %>%
+    rename(any_of(c(item_oid = "OID.2",
+                    item_name = "Name.1",
+                    item_data_type = "DataType",
+                    item_length = "Length",
+                    item_significant_digits = "SignificantDigits",
+                    item_sas_field_name = "SASFieldName",
+                    item_comment = "Comment")))
 }
 

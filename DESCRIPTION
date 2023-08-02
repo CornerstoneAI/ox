@@ -19,7 +19,7 @@ Imports:
     pbapply,
     magrittr,
     snakecase
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.1
 Suggests: testthat,
     knitr,
     rmarkdown

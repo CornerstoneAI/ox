@@ -4,8 +4,7 @@
 \alias{ox_xtract_group}
 \title{Data for a group of items, as a tidy dataframe}
 \usage{
-ox_xtract_group(ox_obj, group, define_factors = FALSE,
-  use_item_names = FALSE)
+ox_xtract_group(ox_obj, group, define_factors = FALSE, use_item_names = FALSE)
 }
 \arguments{
 \item{ox_obj}{An object of class \code{ox_all}, as returned by \code{ox::ox_all()}.}
