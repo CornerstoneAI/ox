@@ -8,6 +8,10 @@
 #' by \code{XML::xmlParse()}.
 #'
 #' @return A dataframe.
+#' @importFrom dplyr bind_rows select any_of
+#' @importFrom XML xpathApply xmlAncestors xmlAttrs
+#' @importFrom pbapply pblapply
+#' @importFrom snakecase to_snake_case
 #' @export
 #'
 #' @examples
@@ -39,22 +43,15 @@ ox_data <- function(parsed_xml) {
   message("Extracting data from ItemData nodes...")
 
   # loop over nodes with a progress bar,
-  # extract attributes for node an ancestors,
+  # extract attributes for node and ancestors,
   # and bind_rows
   res <- pbapply::pblapply(nodes,
                     FUN = function (x) data.frame(XML::xmlAncestors(x, XML::xmlAttrs),
                                                   stringsAsFactors = FALSE)) %>%
-    dplyr::bind_rows()
-
-  # Dropping unneded vars
-  # NOT with dplyr::select, because they are NOT all  always present !
-  res$FileOID <- NULL
-  res$Description <- NULL
-  res$CreationDateTime <- NULL
-  res$FileType <- NULL
-  res$ODMVersion <- NULL
-  res$schemaLocation <- NULL
-  res$MetaDataVersionOID <- NULL
+    dplyr::bind_rows() %>%
+    # Dropping unneded vars
+    select(-any_of(c("FileOID", "Description", "CreationDateTime", "FileType",
+                     "ODMVersion", "schemaLocation", "MetaDataVersionOID")))
 
   # to numeric ----
   if (any("StudyEventRepeatKey" %in% names(res))) {
@@ -72,7 +69,7 @@ ox_data <- function(parsed_xml) {
     }
   }
 
-  # change CamelCase by snake_case
+  # change CamelCase to snake_case
   names(res) <- snakecase::to_snake_case(names(res))
 
   # simplify some varnames
