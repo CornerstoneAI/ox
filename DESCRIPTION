@@ -18,7 +18,9 @@ Imports:
     XML,
     pbapply,
     magrittr,
-    snakecase
+    snakecase,
+    tibble,
+    rlang
 RoxygenNote: 7.2.3
 Suggests: testthat,
     knitr,
