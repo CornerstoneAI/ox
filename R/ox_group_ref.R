@@ -7,6 +7,7 @@
 #' by \code{XML::xmlParse()}.
 #'
 #' @return A dataframe.
+#' @importFrom dplyr select rename any_of
 #' @export
 #'
 #' @examples
@@ -31,9 +32,11 @@ ox_group_ref <- function (parsed_xml) {
   }
 
   .attrs_node_and_ancestors(parsed_xml, "ItemGroupRef") %>%
-    dplyr::select(form_oid = OID.2,
-                  group_oid = ItemGroupOID,
-                  group_mandatory = Mandatory)
+    select(any_of(c("OID.2", "Name.1", "ItemGroupOID", "Mandatory"))) %>%
+    rename(any_of(c(form_oid = "OID.2",
+                    form_name = "Name.1",
+                    group_oid = "ItemGroupOID",
+                    group_mandatory = "Mandatory")))
 }
 
 

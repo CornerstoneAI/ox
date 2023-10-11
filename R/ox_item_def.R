@@ -31,13 +31,16 @@ ox_item_def <- function (parsed_xml) {
   }
 
   .attrs_node_and_ancestors(parsed_xml, "ItemDef") %>%
-    select(any_of(c("OID.2", "Name.1", "DataType", "Length", "SignificantDigits", "SASFieldName", "Comment"))) %>%
+    select(any_of(c("OID.2", "Name.1", "DataType", "Length", "SignificantDigits",
+                    "SASFieldName", "FormOID", "BriefDescription", "Comment"))) %>%
     rename(any_of(c(item_oid = "OID.2",
                     item_name = "Name.1",
                     item_data_type = "DataType",
                     item_length = "Length",
                     item_significant_digits = "SignificantDigits",
                     item_sas_field_name = "SASFieldName",
+                    item_form_oid = "FormOID",
+                    item_description = "BriefDescription",
                     item_comment = "Comment")))
 }
 

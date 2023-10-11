@@ -25,6 +25,10 @@
 #' @return A dataframe with study, subject, event, form, group and group repeat keys,
 #' plus all items in \code{group} as variables.
 #'
+#' @importFrom dplyr filter select contains arrange pull one_of left_join
+#' @importFrom tidyr spread
+#' @importFrom tibble add_column
+#' @importFrom rlang `!!!`
 #' @export
 #'
 #' @examples
@@ -105,6 +109,10 @@ ox_xtract_group <- function (ox_obj, group,
 
   # to identify key vars
   key_vars <- names(k)[!(names(k) %in% vars_in_order)]
+
+  missing_vars <- vars_in_order[!vars_in_order %in% names(k)]
+  missing_vars <- setNames(rep(NA, length(missing_vars)), missing_vars)
+  k <- k %>% add_column(!!!missing_vars)
 
   # basic output ----
   k %>%
